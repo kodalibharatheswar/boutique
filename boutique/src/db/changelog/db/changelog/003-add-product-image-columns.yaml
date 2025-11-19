@@ -1,3 +1,0 @@
-databaseChangeLog:
-  - include:
-      file: db/changelog/003-add-product-image-columns.yaml

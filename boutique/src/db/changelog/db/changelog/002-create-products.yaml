@@ -1,3 +1,0 @@
-databaseChangeLog:
-  - include:
-      file: db/changelog/002-create-products.yaml

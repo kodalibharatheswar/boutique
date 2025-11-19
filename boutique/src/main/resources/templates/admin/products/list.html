@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Manage Products - Admin</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand">Boutique Admin</a>
+    <div>
+      <a class="btn btn-outline-light me-2" th:href="@{/admin/dashboard}">Dashboard</a>
+      <a class="btn btn-danger" th:href="@{/logout}">Logout</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Manage Products</h2>
+    <a class="btn btn-success" th:href="@{/admin/products/create}">
+      + Add New Product
+    </a>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-striped table-hover">
+      <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>Image</th>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Price</th>
+        <th>Stock</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="p : ${products}">
+        <td th:text="${p.id}"></td>
+        <td>
+          <img th:src="${p.mainImage != null ? '/images/products/' + p.mainImage : '/images/products/noimage.png'}"
+               style="width:60px;height:60px;object-fit:cover;" alt="Product"/>
+        </td>
+        <td th:text="${p.name}"></td>
+        <td th:text="${p.category != null ? p.category.name : 'N/A'}"></td>
+        <td>₹<span th:text="${p.price}"></span></td>
+        <td th:text="${p.stock}"></td>
+        <td>
+          <a class="btn btn-sm btn-primary"
+             th:href="@{'/admin/products/edit/' + ${p.id}}">Edit</a>
+          <a class="btn btn-sm btn-danger"
+             th:href="@{'/admin/products/delete/' + ${p.id}}"
+             onclick="return confirm('Delete this product?')">Delete</a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <div th:if="${#lists.isEmpty(products)}" class="alert alert-info">
+      No products found. <a th:href="@{/admin/products/create}">Add your first product</a>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

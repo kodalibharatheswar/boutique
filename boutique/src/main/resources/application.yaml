@@ -36,6 +36,7 @@ server:
 
   liquibase:
     change-log: classpath:/db/changelog/db.changelog-master.yaml
+    clear-checksums: true
     # Ensure this is the only Liquibase property remaining after the fix.
 
 logging:

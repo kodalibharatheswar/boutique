@@ -1,0 +1,40 @@
+databaseChangeLog:
+  - changeSet:
+      id: 005-seed-product-categories
+      author: system
+      preconditions:
+        - sqlCheck:
+            expectedResult: "0"
+            sql: "SELECT count(*) FROM product_categories"
+      changes:
+        - comment: Insert initial product categories
+        - insert:
+            tableName: product_categories
+            columns:
+              - column:
+                  name: name
+                  value: 'Clothing'
+        - insert:
+            tableName: product_categories
+            columns:
+              - column:
+                  name: name
+                  value: 'Accessories'
+        - insert:
+            tableName: product_categories
+            columns:
+              - column:
+                  name: name
+                  value: 'Footwear'
+        - insert:
+            tableName: product_categories
+            columns:
+              - column:
+                  name: name
+                  value: 'Jewelry'
+        - insert:
+            tableName: product_categories
+            columns:
+              - column:
+                  name: name
+                  value: 'Bags'

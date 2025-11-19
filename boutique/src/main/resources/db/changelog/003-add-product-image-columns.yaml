@@ -30,7 +30,3 @@ databaseChangeLog:
               - column:
                   name: file_name
                   type: varchar(255)
-        # Assuming the old change set used 'image_url', we remove it for cleanup.
-        - dropColumn:
-            tableName: product_images
-            columnName: image_url

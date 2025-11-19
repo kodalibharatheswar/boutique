@@ -13,3 +13,7 @@ databaseChangeLog:
   # 3. Seed data
   - include:
       file: db/changelog/004-seed-admin.yaml
+
+
+  - include:
+      file: db/changelog/005-seed-categories.yaml
