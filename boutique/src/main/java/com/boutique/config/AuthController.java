@@ -1,3 +1,4 @@
+/*
 package com.boutique.config;
 
 import org.springframework.security.core.Authentication;
@@ -23,3 +24,4 @@ public class AuthController {
         return "redirect:/customer/dashboard";
     }
 }
+*/
