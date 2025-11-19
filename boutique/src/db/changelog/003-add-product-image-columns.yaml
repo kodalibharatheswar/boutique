@@ -1,0 +1,22 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-mainimage-to-products
+      author: me
+      changes:
+        - addColumn:
+            tableName: products
+            columns:
+              - column:
+                  name: main_image
+                  type: varchar(255)
+
+  - changeSet:
+      id: add-filename-to-product-images
+      author: me
+      changes:
+        - addColumn:
+            tableName: product_images
+            columns:
+              - column:
+                  name: file_name
+                  type: varchar(255)

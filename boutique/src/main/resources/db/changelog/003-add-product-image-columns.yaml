@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3
+      author: boutique
+      changes:
+        - comment: Add image columns to the products table.
+        - addColumn:
+            tableName: products
+            columns:
+              - column:
+                  name: image_url
+                  type: VARCHAR(255)

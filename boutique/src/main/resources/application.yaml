@@ -1,0 +1,48 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/boutique_db?allowPublicKeyRetrieval=true&useSSL=false
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 20MB
+
+app:
+  upload:
+    dir: src/main/resources/static/images/products
+    url-path: /images/products/
+
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+
+  thymeleaf:
+    cache: false
+
+
+server:
+  port: 8080
+
+  security:
+    user:
+      name: admin
+      password: admin
+
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.yaml
+
+
+logging:
+  level:
+    root: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE

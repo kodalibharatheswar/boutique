@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: seed-admin
+      author: system
+      changes:
+        - insert:
+            tableName: customers
+            columns:
+              - column:
+                  name: id
+                  value: "admin-0001"
+              - column:
+                  name: email
+                  value: "admin@boutique.com"
+              - column:
+                  name: password_hash
+                  value: "$2a$10$Z6VQdHpbYz8q0mO6EXAMPLEENCRYPTEDHASH" # replace below
+              - column:
+                  name: first_name
+                  value: "System"
+              - column:
+                  name: last_name
+                  value: "Admin"
+              - column:
+                  name: phone
+                  value: "9999999999"
+              - column:
+                  name: role
+                  value: "ADMIN"

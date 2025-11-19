@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin Dashboard - Boutique</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand">Boutique Admin</a>
+
+        <div>
+            <a class="btn btn-danger" th:href="@{/logout}">Logout</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-5">
+
+    <h2>Welcome Admin!</h2>
+    <hr>
+
+    <div class="row">
+
+        <div class="col-md-4">
+            <div class="card bg-primary text-white shadow p-3">
+                <h4>Total Products</h4>
+                <h2 th:text="${productCount}">0</h2>
+            </div>
+        </div>
+
+    </div>
+
+    <hr>
+
+    <a class="btn btn-success mt-3" th:href="@{/admin/products}">Manage Products</a>
+
+</div>
+
+</body>
+</html>
