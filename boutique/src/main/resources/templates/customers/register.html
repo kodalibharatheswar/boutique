@@ -28,12 +28,8 @@
     <input type="text" th:field="*{phone}" required />
     <br/><br/>
 
-    <!-- NEW ROLE DROPDOWN -->
-    <label>Register As:</label>
-    <select th:field="*{role}" required>
-        <option value="CUSTOMER">Customer</option>
-        <option value="ADMIN">Admin</option>
-    </select>
+    <!-- REMOVED ROLE DROPDOWN: The role is now set to CUSTOMER in the backend controller. -->
+    <p>Registering as: **Customer** (Default Role)</p>
     <br/><br/>
 
     <button type="submit">Register</button>

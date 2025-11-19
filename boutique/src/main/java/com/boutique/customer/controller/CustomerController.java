@@ -1,6 +1,5 @@
 package com.boutique.customer.controller;
 
-
 import com.boutique.customer.dto.CreateCustomerRequest;
 import com.boutique.customer.dto.CustomerDto;
 import com.boutique.customer.service.CustomerService;
@@ -9,19 +8,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-
 @Controller
 @RequestMapping("/customers")
 public class CustomerController {
 
-
     private final CustomerService service;
-
 
     public CustomerController(CustomerService service) {
         this.service = service;
     }
-
 
     @GetMapping("/register")
     public String registerForm(Model model) {
@@ -29,10 +24,13 @@ public class CustomerController {
         return "customers/register"; // Thymeleaf template path
     }
 
-
     @PostMapping("/register")
     public String registerSubmit(@Valid @ModelAttribute CreateCustomerRequest req, Model model) {
         try {
+            // CRITICAL SECURITY FIX: Ensure all public registrations are for the CUSTOMER role.
+            // We explicitly overwrite any user input here.
+            req.setRole("CUSTOMER");
+
             CustomerDto dto = service.createCustomer(req);
             model.addAttribute("customer", dto);
             return "customers/registered";

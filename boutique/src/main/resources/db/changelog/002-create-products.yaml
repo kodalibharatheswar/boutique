@@ -1,28 +1,80 @@
 databaseChangeLog:
   - changeSet:
-      id: 2
-      author: boutique
+      id: 002-create-product-category
+      author: system
+      preconditions:
+        - not:
+            - tableExists:
+                tableName: product_categories
       changes:
-        - comment: Creates the products table.
+        - createTable:
+            tableName: product_categories
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT AUTO_INCREMENT
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 002-create-products-table
+      author: system
+      preconditions:
+        - not:
+            - tableExists:
+                tableName: products
+      changes:
         - createTable:
             tableName: products
             columns:
               - column:
                   name: id
-                  type: VARCHAR(36)
+                  type: BIGINT AUTO_INCREMENT
                   constraints:
                     primaryKey: true
-                    nullable: false
               - column:
                   name: name
-                  type: VARCHAR(255)
-                  constraints:
-                    nullable: false
+                  type: VARCHAR(200)
               - column:
                   name: description
                   type: TEXT
               - column:
                   name: price
-                  type: DECIMAL(10, 2)
+                  type: DECIMAL(10,2)
+              - column:
+                  name: stock
+                  type: INT
+              - column:
+                  name: category_id
+                  type: BIGINT
                   constraints:
-                    nullable: false
+                    foreignKeyName: fk_product_category
+                    references: product_categories(id)
+
+  - changeSet:
+      id: 002-create-product-images-table
+      author: system
+      preconditions:
+        - not:
+            - tableExists:
+                tableName: product_images
+      changes:
+        - createTable:
+            tableName: product_images
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT AUTO_INCREMENT
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: product_id
+                  type: BIGINT
+                  constraints:
+                    foreignKeyName: fk_product_image
+                    references: products(id)

@@ -1,11 +1,12 @@
+# Liquibase Master Changelog - Includes all other change logs in order.
 databaseChangeLog:
-  # 1. Create the base tables
+  # 1. Base tables
   - include:
       file: db/changelog/001-create-customers.yaml
   - include:
       file: db/changelog/002-create-products.yaml
 
-  # 2. Schema changes
+  # 2. Schema updates
   - include:
       file: db/changelog/003-add-product-image-columns.yaml
 
