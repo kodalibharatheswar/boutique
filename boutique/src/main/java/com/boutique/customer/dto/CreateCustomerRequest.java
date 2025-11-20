@@ -23,6 +23,6 @@ public class CreateCustomerRequest {
     private String phone;
 
     // NEW FIELD
-    @NotBlank
+//    @NotBlank
     private String role;   // CUSTOMER or ADMIN
 }

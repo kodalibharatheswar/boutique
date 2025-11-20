@@ -46,7 +46,39 @@ public class CustomerController {
             return "customers/register";
         }
     }
+
+    // --- NEW ADMIN REGISTRATION METHODS ---
+
+    // 1. Show Admin Registration Form (URL: /customers/admin/register)
+    @GetMapping("/admin/register")
+    public String adminRegisterForm(Model model) {
+        model.addAttribute("createCustomerRequest", new CreateCustomerRequest());
+        return "customers/admin-register"; // Use new template
+    }
+
+    // 2. Handle Admin Registration Submission
+    @PostMapping("/admin/register")
+    public String adminRegisterSubmit(@Valid @ModelAttribute CreateCustomerRequest req,
+                                      BindingResult bindingResult,
+                                      Model model) {
+        // CRITICAL: Explicitly set the role to ADMIN
+        req.setRole("ADMIN");
+
+        if (bindingResult.hasErrors()) {
+            return "customers/admin-register";
+        }
+
+        try {
+            CustomerDto dto = service.createCustomer(req);
+            // Redirect to login after successful registration
+            return "redirect:/login";
+        } catch (IllegalArgumentException ex) {
+            model.addAttribute("error", ex.getMessage());
+            return "customers/admin-register";
+        }
+    }
 }
+
 
 /*
 package com.boutique.customer.controller;

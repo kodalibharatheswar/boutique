@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Admin Registration</title>
+</head>
+<body>
+<h2>Register New Administrator</h2>
+
+<form th:action="@{/customers/admin/register}" th:object="${createCustomerRequest}" method="post">
+
+  <label>Email:</label>
+  <input type="text" th:field="*{email}" required />
+  <br/><br/>
+
+  <label>Password:</label>
+  <input type="password" th:field="*{password}" required />
+  <br/><br/>
+
+  <label>First Name:</label>
+  <input type="text" th:field="*{firstName}" required />
+  <br/><br/>
+
+  <label>Last Name:</label>
+  <input type="text" th:field="*{lastName}" required />
+  <br/><br/>
+
+  <label>Phone:</label>
+  <input type="text" th:field="*{phone}" required />
+  <br/><br/>
+
+  <p>Registering as: **Administrator**</p>
+  <br/><br/>
+
+  <button type="submit">Register Admin</button>
+
+  <p th:if="${error}" th:text="${error}" style="color:red;"></p>
+
+</form>
+
+<a th:href="@{/}">Back to Home</a>
+</body>
+</html>

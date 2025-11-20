@@ -1,4 +1,3 @@
-/*
 package com.boutique.config;
 
 import org.springframework.security.core.Authentication;
@@ -14,14 +13,14 @@ public class AuthController {
     }
 
     // redirect based on role
-    @GetMapping("/post-login")
-    public String postLogin(Authentication auth) {
-        String role = auth.getAuthorities().iterator().next().getAuthority();
-
-        if (role.equals("ROLE_ADMIN")) {
-            return "redirect:/admin/dashboard";
-        }
-        return "redirect:/customer/dashboard";
-    }
+//    @GetMapping("/post-login")
+//    public String postLogin(Authentication auth) {
+//        String role = auth.getAuthorities().iterator().next().getAuthority();
+//
+//        if (role.equals("ROLE_ADMIN")) {
+//            return "redirect:/admin/dashboard";
+//        }
+//        return "redirect:/customer/dashboard";
+//    }
 }
-*/
+
