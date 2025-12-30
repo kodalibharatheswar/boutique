@@ -60,4 +60,6 @@ public class WishlistService {
     public List<Wishlist> getWishlistItems(Long userId) {
         return wishlistRepository.findByUserId(userId);
     }
+
+    
 }

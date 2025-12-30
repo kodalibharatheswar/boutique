@@ -102,6 +102,29 @@ public class StripeService {
         return paymentIntent.getClientSecret();
     }
 
+
+    // Option 1: Create overloaded method
+public String createPaymentIntent(double totalPrice) throws StripeException {
+    // Calculate amount in smallest currency unit
+    Long amountInCents = BigDecimal.valueOf(totalPrice)
+            .multiply(BigDecimal.valueOf(100))
+            .longValue();
+
+    PaymentIntentCreateParams params = PaymentIntentCreateParams.builder()
+            .setAmount(amountInCents)
+            .setCurrency(currency)
+            .setAutomaticPaymentMethods(
+                PaymentIntentCreateParams.AutomaticPaymentMethods.builder()
+                    .setEnabled(true)
+                    .build())
+            .build();
+
+    PaymentIntent paymentIntent = PaymentIntent.create(params);
+    return paymentIntent.getClientSecret();
+}
+
+// Option 2: Modify existing method to accept amount parameter
+
     /**
      * Helper to get a Stripe Customer or create one if not found.
      * In a production app, the Customer ID would be stored on your local User model.

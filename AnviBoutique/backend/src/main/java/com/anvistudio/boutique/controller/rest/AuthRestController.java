@@ -2,13 +2,25 @@ package com.anvistudio.boutique.controller.rest;
 
 import com.anvistudio.boutique.service.UserService;
 import com.anvistudio.boutique.dto.RegistrationDTO;
+import com.anvistudio.boutique.model.Customer;
 import com.anvistudio.boutique.model.User;
 import com.anvistudio.boutique.model.VerificationToken.TokenType;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -25,9 +37,11 @@ import java.util.Optional;
 public class AuthRestController {
 
     private final UserService userService;
+    private final AuthenticationManager authenticationManager; // ← ADD THIS
 
-    public AuthRestController(UserService userService) {
+    public AuthRestController(UserService userService,AuthenticationManager authenticationManager) {
         this.userService = userService;
+        this.authenticationManager=authenticationManager;
     }
 
     // =========================================================================
@@ -148,4 +162,84 @@ public class AuthRestController {
             return ResponseEntity.badRequest().body(Map.of("error", "Failed to reset password."));
         }
     }
+
+
+
+    /**
+ * GET /api/auth/session
+ * Returns current authenticated user info or 401 if not authenticated
+ */
+@GetMapping("/session")
+public ResponseEntity<Map<String, Object>> getCurrentSession(
+        @AuthenticationPrincipal UserDetails userDetails) {
+    
+    if (userDetails == null) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
+    Map<String, Object> session = new HashMap<>();
+    session.put("username", userDetails.getUsername());
+    session.put("roles", userDetails.getAuthorities());
+    
+    // Get display name from Customer if exists
+    Optional<Customer> customer = userService.getCustomerDetailsByUsername(
+        userDetails.getUsername()
+    );
+    session.put("displayName", customer.map(Customer::getFirstName).orElse("User"));
+    
+    return ResponseEntity.ok(session);
+}
+
+/**
+ * POST /api/auth/logout
+ * Explicitly logs out the user
+ */
+@PostMapping("/logout")
+public ResponseEntity<Map<String, String>> logout(HttpServletRequest request) {
+    request.getSession().invalidate();
+    return ResponseEntity.ok(Map.of("message", "Logged out successfully"));
+}
+
+
+/**
+ * POST /api/auth/login
+ * Custom login endpoint that returns JSON instead of redirect
+ */
+@PostMapping("/login")
+public ResponseEntity<Map<String, Object>> login(
+        @RequestParam String username,
+        @RequestParam String password,
+        HttpServletRequest request) {
+    
+    try {
+        // Authenticate manually
+        Authentication authentication = authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(username, password)
+        );
+        
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        
+        // Create session
+        HttpSession session = request.getSession(true);
+        session.setAttribute(
+            HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
+            SecurityContextHolder.getContext()
+        );
+        
+        // Return user info
+        Map<String, Object> response = new HashMap<>();
+        response.put("username", username);
+        response.put("roles", authentication.getAuthorities());
+        
+        return ResponseEntity.ok(response);
+        
+    } catch (BadCredentialsException e) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+            .body(Map.of("error", "Invalid username or password"));
+    } catch (DisabledException e) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+            .body(Map.of("error", "Account not verified"));
+    }
+}
+
 }

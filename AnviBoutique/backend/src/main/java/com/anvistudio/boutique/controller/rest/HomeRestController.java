@@ -62,7 +62,8 @@ public class HomeRestController {
             Optional<Customer> customer = userService.getCustomerDetailsByUsername(username);
 
             Map<String, Object> userMap = new HashMap<>();
-            userMap.HashMap("username", username);
+            // userMap.HashMap("username", username);
+            userMap.put("username", username);
             userMap.put("roles", userDetails.getAuthorities());
             userMap.put("displayName", customer.isPresent() ? customer.get().getFirstName() : "User");
 

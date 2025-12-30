@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.Comparator;
 
 @Service
@@ -43,6 +44,13 @@ public class ProductService {
                 .orElse("https://placehold.co/80x80/f0f0f0/333?text=N%2FA");
     }
 
+
+    public List<Product> getRelatedProducts(String category, Long excludeProductId) {
+    List<Product> products = productRepository.findByCategory(category);
+    products.removeIf(p -> p.getId().equals(excludeProductId));
+    products.removeIf(p -> !p.getIsAvailable());
+    return products.stream().limit(4).collect(Collectors.toList());
+}
 
     /**
      * Retrieves all products (used for admin view).

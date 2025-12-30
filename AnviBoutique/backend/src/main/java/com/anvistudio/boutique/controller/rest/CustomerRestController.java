@@ -173,3 +173,4 @@ public class CustomerRestController {
         return ResponseEntity.ok(giftCardService.getGiftCardsByUsername(userDetails.getUsername()));
     }
 }
+

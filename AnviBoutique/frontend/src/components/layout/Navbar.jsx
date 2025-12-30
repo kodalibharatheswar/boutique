@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { categoryImages, brandLogo } from '@/utils/images'
 import { 
   Search, 
   Menu, 
@@ -16,6 +17,19 @@ import {
   Gift, 
   IdCard
 } from 'lucide-react';
+
+
+function CategoryCard({ category }) {
+  return (
+    <img src={categoryImages[category]} alt={category} />
+  )
+}
+
+function Navbar() {
+  return (
+    <img src={brandLogo} alt="Anvi Studio" />
+  )
+}
 
 const Navbar = ({ user }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

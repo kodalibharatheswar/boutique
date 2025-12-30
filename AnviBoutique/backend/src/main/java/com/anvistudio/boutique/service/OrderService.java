@@ -1,5 +1,6 @@
 package com.anvistudio.boutique.service;
 
+import com.anvistudio.boutique.model.Address;
 import com.anvistudio.boutique.model.CartItem;
 import com.anvistudio.boutique.model.Order;
 import com.anvistudio.boutique.model.User;
@@ -27,6 +28,53 @@ public class OrderService {
         this.userService = userService;
     }
 
+
+    @Transactional
+public Order fulfillOrder(User user, List<CartItem> cartItems, Address address, 
+                         String paymentMode, String stripeIntentId) {
+    
+    // 1. Calculate total
+    BigDecimal totalAmount = cartItems.stream()
+        .map(item -> BigDecimal.valueOf(item.getTotalPrice()))
+        .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+    // 2. Create order items snapshot
+    String orderItemsSnapshot = cartItems.stream()
+        .map(item -> String.format("%dx %s [ID:%d] (₹%.2f)",
+                item.getQuantity(),
+                item.getProduct().getName(),
+                item.getProduct().getId(),
+                item.getTotalPrice()))
+        .collect(Collectors.joining("; "));
+
+    // 3. Create address snapshot
+    String addressSnapshot = String.format(
+        "%s, %s, %s, %s, %s - %s, Phone: %s",
+        address.getRecipientName(),
+        address.getStreetAddress(),
+        address.getLandmark() != null ? address.getLandmark() : "",
+        address.getCity(),
+        address.getState(),
+        address.getPincode(),
+        address.getPhoneNumber()
+    );
+
+    // 4. Create and save order
+    Order order = new Order();
+    order.setUser(user);
+    order.setOrderDate(new Date());
+    order.setTotalAmount(totalAmount);
+    order.setStatus(Order.OrderStatus.PROCESSING);
+    order.setShippingAddressSnapshot(addressSnapshot);
+    order.setOrderItemsSnapshot(orderItemsSnapshot);
+    
+    // 5. Store payment info (you may want to add a field to Order entity)
+    // order.setPaymentMode(paymentMode);
+    // order.setStripePaymentIntentId(stripeIntentId);
+
+    return orderRepository.save(order);
+}
+
     /**
      * NEW: Retrieves all orders regardless of user (for Admin dashboard).
      */
@@ -49,6 +97,13 @@ public class OrderService {
     public Optional<Order> getOrderById(Long orderId) {
         return orderRepository.findById(orderId);
     }
+
+    /**
+ * Retrieves all orders for a specific user ID.
+ */
+public List<Order> getOrdersByUserId(Long userId) {
+    return orderRepository.findByUserIdOrderByOrderDateDesc(userId);
+}
 
     /**
      * NEW: Utility method to save an Order (used by AdminController for status updates).
@@ -76,6 +131,14 @@ public class OrderService {
         System.out.println("LOG: Order " + orderId + " cancelled. Initiating refund for amount: " + order.getTotalAmount());
         // TODO: Trigger Refund Process (Stripe API call would happen here)
     }
+
+
+    @Transactional
+public void requestReturn(Long orderId) {
+    // This is actually already implemented as returnOrder()
+    // Just create an alias or rename the existing method
+    returnOrder(orderId);
+}
 
     /**
      * NEW: Handles return request logic (for DELIVERED orders).

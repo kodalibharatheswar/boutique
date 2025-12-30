@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { categoryImages, brandLogo } from '@/utils/images'
 import axios from 'axios';
 import { 
   Mail, 
@@ -13,6 +14,18 @@ import {
   AlertCircle,
   MessageCircle
 } from 'lucide-react';
+
+function CategoryCard({ category }) {
+  return (
+    <img src={categoryImages[category]} alt={category} />
+  )
+}
+
+function Navbar() {
+  return (
+    <img src={brandLogo} alt="Anvi Studio" />
+  )
+}
 
 const Footer = () => {
   const [email, setEmail] = useState('');

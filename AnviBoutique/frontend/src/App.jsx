@@ -18,6 +18,33 @@ import {
   Settings
 } from 'lucide-react';
 
+// Import Pages
+import Home from './pages/Home';
+import About from './pages/About';
+import Contact from './pages/Contact';
+import Products from './pages/Products';
+import ProductDetail from './pages/ProductDetail';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import ConfirmOtp from './pages/ConfirmOtp';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetOtp from './pages/ResetOtp';
+import ResetPassword from './pages/ResetPassword';
+import Cart from './pages/Cart';
+import Wishlist from './pages/Wishlist';
+import Checkout from './pages/Checkout';
+import PaymentSuccess from './pages/PaymentSuccess';
+import PaymentCancel from './pages/PaymentCancel';
+import CustomerDashboard from './pages/customer/Dashboard';
+import CustomerProfile from './pages/customer/Profile';
+import CustomerOrders from './pages/customer/Orders';
+import CustomerAddresses from './pages/customer/Addresses';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import ReturnPolicy from './pages/ReturnPolicy';
+import ShippingPolicy from './pages/ShippingPolicy';
+import TermsAndConditions from './pages/TermsAndConditions';
+
 // --- INTEGRATED LAYOUT COMPONENTS ---
 
 const Navbar = ({ user }) => {
@@ -95,23 +122,6 @@ const Footer = () => (
   </footer>
 );
 
-// --- DYNAMIC PAGE COMPONENT LOADER ---
-// This acts as a placeholder for components defined in other files for local dev.
-const PagePlaceholder = ({ title, icon: Icon }) => (
-  <div className="min-h-[600px] bg-slate-50 flex flex-col items-center justify-center p-8 text-center">
-    <div className="bg-white w-24 h-24 rounded-[2.5rem] shadow-xl flex items-center justify-center text-orange-500 mb-8 border border-gray-100 animate-in zoom-in">
-      <Icon size={48} />
-    </div>
-    <h1 className="text-4xl font-serif font-bold text-gray-900 italic mb-4">{title}</h1>
-    <p className="text-gray-400 text-sm max-w-xs mx-auto leading-relaxed">
-      This page logic has been generated in your previous steps. Ensure the file exists in your local <code>/src/pages</code> directory.
-    </p>
-    <Link to="/" className="mt-10 text-orange-600 font-bold uppercase text-[10px] tracking-[0.2em] hover:underline flex items-center gap-2">
-      <ArrowLeft size={14} /> Back to Homepage
-    </Link>
-  </div>
-);
-
 // --- MAIN APPLICATION COMPONENT ---
 
 function App() {
@@ -129,41 +139,41 @@ function App() {
         <main className="flex-grow">
           <Routes>
             {/* 1. PUBLIC ROUTES */}
-            <Route path="/" element={<PagePlaceholder title="The Home Boutique" icon={ShieldCheck} />} />
-            <Route path="/about" element={<PagePlaceholder title="Our Story" icon={InfoIcon} />} />
-            <Route path="/contact" element={<PagePlaceholder title="Contact Us" icon={Mail} />} />
-            <Route path="/products" element={<PagePlaceholder title="The Gallery" icon={ShoppingBag} />} />
-            <Route path="/products/:id" element={<PagePlaceholder title="Product Detail" icon={Package} />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/products" element={<Products />} />
+            <Route path="/products/:id" element={<ProductDetail />} />
 
             {/* 2. AUTH ROUTES */}
-            <Route path="/login" element={<PagePlaceholder title="Customer Login" icon={User} />} />
-            <Route path="/register" element={<PagePlaceholder title="Create Account" icon={User} />} />
-            <Route path="/confirm-otp" element={<PagePlaceholder title="Verify Identity" icon={ShieldCheck} />} />
-            <Route path="/forgot-password" element={<PagePlaceholder title="Account Recovery" icon={ShieldCheck} />} />
-            <Route path="/reset-otp" element={<PagePlaceholder title="OTP Validation" icon={ShieldCheck} />} />
-            <Route path="/reset-password" element={<PagePlaceholder title="New Password" icon={ShieldCheck} />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/confirm-otp" element={<ConfirmOtp />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-otp" element={<ResetOtp />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
 
             {/* 3. COMMERCE ROUTES */}
-            <Route path="/cart" element={<PagePlaceholder title="Shopping Cart" icon={ShoppingBag} />} />
-            <Route path="/wishlist" element={<PagePlaceholder title="My Favorites" icon={Heart} />} />
-            <Route path="/checkout" element={<PagePlaceholder title="Payment Portal" icon={ShieldCheck} />} />
-            <Route path="/payment/success" element={<PagePlaceholder title="Order Confirmed" icon={ShieldCheck} />} />
-            <Route path="/payment/cancel" element={<PagePlaceholder title="Checkout Cancelled" icon={X} />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/wishlist" element={<Wishlist />} />
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/payment/success" element={<PaymentSuccess />} />
+            <Route path="/payment/cancel" element={<PaymentCancel />} />
 
             {/* 4. CUSTOMER PROFILE ROUTES */}
-            <Route path="/customer/dashboard" element={<PagePlaceholder title="Dashboard" icon={Settings} />} />
-            <Route path="/customer/profile" element={<PagePlaceholder title="My Profile" icon={User} />} />
-            <Route path="/customer/orders" element={<PagePlaceholder title="My Orders" icon={Package} />} />
-            <Route path="/customer/addresses" element={<PagePlaceholder title="Saved Addresses" icon={MapPin} />} />
+            <Route path="/customer/dashboard" element={<CustomerDashboard />} />
+            <Route path="/customer/profile" element={<CustomerProfile />} />
+            <Route path="/customer/orders" element={<CustomerOrders />} />
+            <Route path="/customer/addresses" element={<CustomerAddresses />} />
 
             {/* 5. ADMIN ROUTES */}
-            <Route path="/admin" element={<PagePlaceholder title="Admin Studio" icon={Settings} />} />
+            <Route path="/admin" element={<AdminDashboard />} />
 
             {/* 6. POLICY ROUTES */}
-            <Route path="/policy_privacy" element={<PagePlaceholder title="Privacy Policy" icon={ShieldCheck} />} />
-            <Route path="/policy_return" element={<PagePlaceholder title="Return Policy" icon={ShieldCheck} />} />
-            <Route path="/policy_shipping" element={<PagePlaceholder title="Shipping Policy" icon={Truck} />} />
-            <Route path="/policy_terms" element={<PagePlaceholder title="Terms of Service" icon={ShieldCheck} />} />
+            <Route path="/policy_privacy" element={<PrivacyPolicy />} />
+            <Route path="/policy_return" element={<ReturnPolicy />} />
+            <Route path="/policy_shipping" element={<ShippingPolicy />} />
+            <Route path="/policy_terms" element={<TermsAndConditions />} />
 
             {/* 404 CATCH-ALL */}
             <Route path="*" element={<Navigate to="/" replace />} />
@@ -178,10 +188,5 @@ function App() {
     </Router>
   );
 }
-
-// Utility icon for the placeholder (Lucide wrapper)
-const InfoIcon = (props) => (
-  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-);
 
 export default App;

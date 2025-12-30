@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * REST Controller for Product Catalog and Reviews.
@@ -69,6 +70,15 @@ public class ProductRestController {
 
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/search")
+public ResponseEntity<List<Product>> searchProducts(@RequestParam String keyword) {
+    List<Product> results = productService.getFilteredProducts(
+        null, null, null, null, null, null, keyword
+    );
+    return ResponseEntity.ok(results);
+}
+
 
     /**
      * POST /api/products/{id}/review

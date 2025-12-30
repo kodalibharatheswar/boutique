@@ -45,7 +45,8 @@ public class WishlistRestController {
             User user = userService.findUserByUsername(userDetails.getUsername())
                     .orElseThrow(() -> new RuntimeException("Authenticated user not found in DB."));
 
-            List<Wishlist> wishlistItems = wishlistService.getWishlistByUserId(user.getId());
+            // List<Wishlist> wishlistItems = wishlistService.getWishlistByUserId(user.getId());
+            List<Wishlist> wishlistItems = wishlistService.getWishlistItems(user.getId());
             return ResponseEntity.ok(wishlistItems);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

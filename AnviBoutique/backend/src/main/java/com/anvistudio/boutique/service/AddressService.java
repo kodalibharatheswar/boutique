@@ -36,10 +36,15 @@ public class AddressService {
         return addressRepository.findById(addressId);
     }
 
+
+    public List<Address> getAddressesByUserId(Long userId) {
+    return addressRepository.findByUserId(userId);
+}
+
     /**
      * Saves a new address or updates an existing one.
      */
-    @Transactional
+    /* @Transactional
     public Address saveAddress(String username, Address address) {
         User user = userService.findUserByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("User not found: " + username));
@@ -58,7 +63,31 @@ public class AddressService {
         }
 
         return addressRepository.save(address);
+    } */
+
+        /**
+ * Saves a new address (overloaded version accepting userId directly).
+ */
+@Transactional
+public Address saveAddress(Address address) {
+    // Validate that user is already set
+    if (address.getUser() == null) {
+        throw new IllegalArgumentException("Address must be linked to a user.");
     }
+    
+    // Handle default address logic
+    if (Boolean.TRUE.equals(address.getIsDefault())) {
+        List<Address> userAddresses = addressRepository.findByUserId(address.getUser().getId());
+        userAddresses.stream()
+            .filter(Address::getIsDefault)
+            .forEach(addr -> {
+                addr.setIsDefault(false);
+                addressRepository.save(addr);
+            });
+    }
+    
+    return addressRepository.save(address);
+}
 
     /**
      * Deletes a saved address by ID.
